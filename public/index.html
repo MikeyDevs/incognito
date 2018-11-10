@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <!-- Let browser know website is optimized for mobile -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!--  jQuery-->
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+
+    <title>incognito.</title>
+
+    <!-- CSS Links -->
+
+    <!-- Materialize Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+    <!-- Materilized Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+    <!-- Google Icon Font  -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- CSS File -->
+    <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection" />
+    <!-- Materialize CSS -->
+    <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection" />
+    <!-- Google Fonts  -->
+    <link href="https://fonts.googleapis.com/css?family=Aldrich" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Orbitron" rel="stylesheet">
+
+    <!-- Setting Map to 100% of the div container -->
+    <style>
+        #map {
+            height: 100%;
+        }
+    </style>
+
+</head>
+
+<body>
+    <nav class="black" role="navigation">
+        <div class="nav-wrapper container">
+            <a href="index.html"><img src="images/logo.png" alt="logo"></a>
+        </div>
+    </nav>
+    <div><br><br><br><br><br><br><br></div>
+    <div class="row" id="bluebuttons">
+        <div class="col s2">
+            <a class="waves-effect light-blue darken-2 btn modal-trigger" id="postbutton" href="#modal1"><i class="material-icons center">textsms</i>post secret</a>
+        </div>
+        <div class="col s2">
+            <a class="waves-effect light-blue darken-2 btn" id="refreshbutton" href="index.html"><i class="material-icons center">location_on</i>refresh map</a>
+        </div>
+        <div class="row" id="sign">
+            <div class="col s2">
+                <div id="incognito">
+                    <h1> in<span id="offset">cogn</span>ito </h1>
+                </div>
+            </div>
+
+            <!-- Modal -->
+            <div id="modal1" class="modal">
+                <div class="modal-content">
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div class="row" id="description">
+        <p>Use the map to post a secret from your current location, or view other secrets!</p>
+        <p>Browser geolocation services must be enabled in order to post secrets</p>
+    </div>
+    <div class="row center">
+        <div id="map" style="width: 100%; height: 500px; margin: 0 auto 0 auto;">
+        </div>
+    </div>
+    </div>
+
+    <!--  Scripts-->
+    <!-- Links to Js Files -->
+    <script src="js/materialize.js"></script>
+    <script src="js/init.js"></script>
+
+    <!-- Geolocation Map -->
+    <div id="map"></div>
+    <script>
+        var map, infoWindow;
+        var userPos = [];
+
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: {
+                    lat: 41.8781,
+                    lng: -87.6298
+                },
+                zoom: 16,
+                styles: [{
+                    "featureType": "all",
+                    "elementType": "labels.text.fill",
+                    "stylers": [{
+                        "color": "#ffffff"
+                    }]
+                }, {
+                    "featureType": "all",
+                    "elementType": "labels.text.stroke",
+                    "stylers": [{}, {
+                        "lightness": 13
+                    }]
+                }, {
+                    "featureType": "administrative",
+                    "elementType": "geometry.fill",
+                    "stylers": [{
+                        "color": "#000000"
+                    }]
+                }, {
+                    "featureType": "administrative",
+                    "elementType": "geometry.stroke",
+                    "stylers": [{
+                        "color": "#000000"
+                    }, {
+                        "lightness": 14
+                    }, {
+                        "weight": 1.4
+                    }]
+                }, {
+                    "featureType": "administrative",
+                    "elementType": "labels",
+                    "stylers": [{
+                        "visibility": "off"
+                    }]
+                }, {
+                    "featureType": "administrative.country",
+                    "elementType": "geometry.fill",
+                    "stylers": [{
+                        "color": "#000000"
+                    }]
+                }, {
+                    "featureType": "administrative.country",
+                    "elementType": "geometry.stroke",
+                    "stylers": [{
+                        "color": "#ff0097"
+                    }, {
+                        "weight": "2"
+                    }]
+                }, {
+                    "featureType": "administrative.country",
+                    "elementType": "labels",
+                    "stylers": [{
+                        "visibility": "off"
+                    }]
+                }, {
+                    "featureType": "administrative.province",
+                    "elementType": "geometry.fill",
+                    "stylers": [{
+                        "color": "#000117"
+                    }]
+                }, {
+                    "featureType": "administrative.province",
+                    "elementType": "geometry.stroke",
+                    "stylers": [{
+                        "color": "#ff0097"
+                    }]
+                }, {
+                    "featureType": "administrative.province",
+                    "elementType": "labels",
+                    "stylers": [{
+                        "visibility": "on"
+                    }]
+                }, {
+                    "featureType": "administrative.locality",
+                    "elementType": "labels",
+                    "stylers": [{
+                        "visibility": "simplified"
+                    }, {
+                        "color": "#f48fb1"
+                    }]
+                }, {
+                    "featureType": "administrative.land_parcel",
+                    "elementType": "labels",
+                    "stylers": [{
+                        "visibility": "off"
+                    }]
+                }, {
+                    "featureType": "landscape",
+                    "elementType": "all",
+                    "stylers": [{
+                        "color": "#000000"
+                    }, {
+                        "visibility": "on"
+                    }]
+                }, {
+                    "featureType": "landscape",
+                    "elementType": "labels",
+                    "stylers": [{
+                        "visibility": "off"
+                    }]
+                }, {
+                    "featureType": "landscape.natural",
+                    "elementType": "all",
+                    "stylers": [{
+                        "color": "#000000"
+                    }]
+                }, {
+                    "featureType": "poi",
+                    "elementType": "geometry",
+                    "stylers": [{
+                        "color": "#000000"
+                    }, {
+                        "lightness": 5
+                    }]
+                }, {
+                    "featureType": "poi",
+                    "elementType": "geometry.fill",
+                    "stylers": [{
+                        "color": "#000000"
+                    }]
+                }, {
+                    "featureType": "poi",
+                    "elementType": "labels",
+                    "stylers": [{
+                        "visibility": "off"
+                    }]
+                }, {
+                    "featureType": "poi",
+                    "elementType": "labels.text",
+                    "stylers": [{
+                        "visibility": "off"
+                    }]
+                }, {
+                    "featureType": "poi",
+                    "elementType": "labels.icon",
+                    "stylers": [{
+                        "color": "#00ffff"
+                    }]
+                }, {
+                    "featureType": "road.highway",
+                    "elementType": "geometry.fill",
+                    "stylers": [{
+                        "color": "#ff0097"
+                    }, {
+                        "weight": "0.50"
+                    }]
+                }, {
+                    "featureType": "road.highway",
+                    "elementType": "geometry.stroke",
+                    "stylers": [{
+                        "color": "#ff0097"
+                    }, {
+                        "lightness": 25
+                    }, {
+                        "gamma": "0.50"
+                    }, {
+                        "weight": "0.30"
+                    }]
+                }, {
+                    "featureType": "road.arterial",
+                    "elementType": "geometry.fill",
+                    "stylers": [{
+                        "color": "#ff0097"
+                    }, {
+                        "weight": "0.2"
+                    }]
+                }, {
+                    "featureType": "road.arterial",
+                    "elementType": "geometry.stroke",
+                    "stylers": [{
+                        "color": "#ff0097"
+                    }, {
+                        "lightness": 16
+                    }]
+                }, {
+                    "featureType": "road.arterial",
+                    "elementType": "labels",
+                    "stylers": [{
+                        "visibility": "off"
+                    }]
+                }, {
+                    "featureType": "road.local",
+                    "elementType": "geometry",
+                    "stylers": [{
+                        "color": "#ff0097"
+                    }]
+                }, {
+                    "featureType": "transit",
+                    "elementType": "all",
+                    "stylers": [{
+                        "color": "#000000"
+                    }]
+                }, {
+                    "featureType": "water",
+                    "elementType": "all",
+                    "stylers": [{
+                        "color": "#001a2a"
+                    }, {
+                        "visibility": "on"
+                    }]
+                }]
+            });
+
+            infoWindow = new google.maps.InfoWindow;
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    var pos = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
+
+                    infoWindow.setPosition(pos);
+                    infoWindow.setContent('<br />Your adventure begins here!');
+                    infoWindow.open(map);
+                    map.setCenter(pos);
+                    userPos.push(pos);
+                }, function() {
+                    handleLocationError(true, infoWindow, map.getCenter());
+                });
+            } else {
+                handleLocationError(false, infoWindow, map.getCenter());
+            }
+        }
+
+        $.ajax({
+            url: "/secrets",
+            method: "GET"
+        }).done(function(response) {
+            for (var i = 0; i < response.length; i++) {
+                var uluru = {
+                    lat: parseFloat(response[i].lat),
+                    lng: parseFloat(response[i].lng)
+                };
+                var marker = new google.maps.Marker({
+                    position: uluru,
+                    map: map
+                });
+
+                marker.info = new google.maps.InfoWindow({
+                    content: `
+                    <br />
+                    ${response[i].secret}
+
+                    `
+                });
+
+                google.maps.event.addListener(marker, "click", function() {
+                    this.info.open(map, this);
+                });
+            }
+        });
+
+        $.ajax({
+            url: "/index",
+            method: "GET"
+        }).done(function(response) {
+                document.getElementById("postbutton").onclick = function() {
+                document.getElementById("tokenid").value = response;
+            };
+        });
+
+
+        function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+            infoWindow.setPosition(pos);
+            infoWindow.setContent(browserHasGeolocation ?
+                'Error: The Geolocation service failed.' :
+                'Error: Your browser doesn\'t support geolocation.');
+            infoWindow.open(map);
+        }
+
+
+        $(document).ready(function() {
+            // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+            $('#modal1').modal();
+        });
+
+        $("#postbutton").click(function() {
+            $(".modal-content").html(`
+              <h5>What's your deepest, darkest secret?</h5>
+              <br>
+                <form class="col s12" action="api/secrets" method="post">
+                    <div class="row modal-form-row">
+                        <div class="input-field col s12">
+                            <i class="material-icons">star_border</i>
+                            <input id="secret" type="text" class="validate" name="secret">
+                            <input type="number" id="lat" name="lat" style="display:none" value=${userPos[0].lat} readonly><br>
+                            <input type="number" id="lng" name="lng" style="display:none" value=${userPos[0].lng} readonly><br>
+                            <input type="text" id="tokenid" name="tokenid" style="display:none" readonly><br>
+                            <input type="submit" class="modal-action modal-close waves-effect light-blue darken-2 btn" id="modalsubmitbutton" value="post a secret">
+                        </div>
+                    </div>
+                 </form>
+        `)
+        })
+
+    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDLtXQZ2iYfKS8vsAYLGrWiVK7JKM8p9mk&callback=initMap">
+    </script>
+</body>
+
+</html>

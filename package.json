@@ -1,0 +1,33 @@
+{
+  "name": "incognito",
+  "version": "1.0.0",
+  "description": "## Contributors/Roles Scrum Master: Michael David Git Guardian: Julia Reed",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/juliareed/Project2.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/juliareed/Project2/issues"
+  },
+  "homepage": "https://github.com/juliareed/Project2#readme",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "firebaseui": "^2.4.1",
+    "jquery": "^3.3.1",
+    "js-info-bubble": "^0.8.0",
+    "jsdom": "^12.0.0",
+    "moment": "^2.22.2",
+    "mysql2": "^1.4.2",
+    "nanoid": "^1.2.1",
+    "php": "0.0.1",
+    "sequelize": "^4.38.0"
+  }
+}
